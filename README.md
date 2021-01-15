@@ -1,4 +1,4 @@
-# printjacker-dev
+# printjacker
 
 Printjacker is a post-exploitation tool that creates a persistence mechanism by overwriting *Printconfig.dll* with a shellcode injector. The persistence mechanism can be invoked via executing `wmic printer list` command with any user. The shellcode will be executed with **SYSTEM** privileges. Details: [POST.md](POST.md)
 
@@ -37,7 +37,7 @@ Printjacker is a post-exploitation tool that creates a persistence mechanism by 
 
 - Restore the original *printconfig.dll* 
 ```
-.\Printjacker.exe -restore
+.\printjacker.exe -restore
 # Printjacker - Hijack Printconfig.dll
 # Author: millers-crossing
 -------------------------------------------------
